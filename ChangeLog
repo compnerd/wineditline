@@ -1,6 +1,14 @@
 MinGWEditLine's ChangeLog
 -------------------------
 
+*** June 20, 2012: release of MinGWEditLine 2.07 ***
+
+  Changes with respect to the previous version include:
+
+  - A blank line is not introduced anymore at the bottom of the
+    console window
+
+
 *** June 19, 2012: release of MinGWEditLine 2.06 ***
 
   Changes with respect to the previous version include:
