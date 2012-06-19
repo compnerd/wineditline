@@ -39,15 +39,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _READLINE_H_
 #define _READLINE_H_
 
-#define LIBEDIT_VERSION "2.06"
-
 #include <windows.h>
+
+#define LIBEDIT_VERSION "2.07"
 
 /*
 these defines may be changed
 */
-#define _EL_BUF_LEN			4096	//maximum line buffer size
-#define DEFAULT_HISTORY_SIZE		200	//default number of history entries
+#define _EL_BUF_LEN			4096	/* maximum line buffer size */
+#define DEFAULT_HISTORY_SIZE		200	/* default number of history entries */
 
 /*
 these defines should not be mangled
@@ -57,8 +57,6 @@ these defines should not be mangled
 #define _EL_ENV_BUF_LEN			64
 #define _EL_MAX_FILE_BREAK_CHARACTERS	64
 #define _EL_BASIC_FILE_BREAK_CHARACTERS	_T(" \t\n$><=;|&")
-#define FREE_LINE			1
-#define FREE_ALL			0xFFFF
 
 /*
 these are included because for some reason

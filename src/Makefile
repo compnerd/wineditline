@@ -37,8 +37,8 @@ INCLUDE_PATH = $(PWD)/../include
 LIBRARY_PATH = $(PWD)/../lib
 
 STATICLIB = libedit.a
-SHAREDLIB = libedit.dll
-IMPLIB    = libedit.dll.a
+SHAREDLIB = edit.dll
+IMPLIB    = edit.dll.a
 
 PREFIX =
 CC = $(PREFIX)gcc

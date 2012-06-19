@@ -448,7 +448,6 @@ int _el_pad(CONSOLE_SCREEN_BUFFER_INFO *sbInfo, wchar_t *string)
 			string[i] = _T(' ');
 			++i;
 		}
-		string[i - 1] = _T('\n');
 		string[i] = _T('\0');
 	}
 	
@@ -461,19 +460,18 @@ print a string to the Windows Console
 */
 int _el_print_string(wchar_t *string)
 {
-	wchar_t c;
 	int i;
 	int len;
+	int tail_lines;
 	int padded_len;
 	int c_first_line;
 	int c_last_line = 0;
-	int dy;
+	int dy = 0;
 	DWORD n_chars;
 	SHORT x_initial;
 	COORD temp_coord;
 	CONSOLE_SCREEN_BUFFER_INFO sbInfo;
 	int width;
-	int extra;
 	
 	
 	len = wcslen(string);
@@ -491,80 +489,32 @@ int _el_print_string(wchar_t *string)
 	compute the current visible console width
 	*/
 	width = sbInfo.srWindow.Right - sbInfo.srWindow.Left + 1;
-	extra = ((sbInfo.dwSize.X > width) ? 1 : 0);
 	/*
 	count how many characters will fit from the current
 	cursor position to the right console margin
 	*/
 	c_first_line = sbInfo.srWindow.Right
 		- sbInfo.dwCursorPosition.X + 1;
+	tail_lines = wcslen(&_el_line_buffer[rl_point]) / width;
 	/*
 	if the visible console width is not enough,
 	we will write dy full lines
 	*/
-	dy = (len - c_first_line) / width;
-	if (dy < 0) {
-		dy = 0;
-	}
-	else {
+	if (len > c_first_line) {
+		dy = (len - c_first_line) / width;
 		/*
 		these are the residual characters which will
 		be printed on the last line
 		*/
 		c_last_line = len - c_first_line - dy * width;
-	}
-	if (len <= c_first_line) {
-		/*
-		if the whole string will fit on the first line
-		without need to wrap, record current
-		cursor coordinates
-		*/
-		memcpy(&temp_coord, &(sbInfo.dwCursorPosition),
-			sizeof(COORD));
-		/*
-		write out the string
-		*/
-		wcscpy(_el_temp_print, string);
-		c = _el_temp_print[len - 1];
-		padded_len = _el_pad(&sbInfo, _el_temp_print);
-		if ((padded_len == c_first_line) && extra) {
-			wcscat(_el_temp_print, _T("\n"));
-			++padded_len;
-		}
-		if (!WriteConsole(_el_h_out, _el_temp_print,
-			padded_len, &n_chars, NULL)) {
-			return -1;
-		}
-		if (!GetConsoleScreenBufferInfo(_el_h_out, &sbInfo)) {
-			return -1;
-		}
-		if ((len == c_first_line) && (!extra)) {
-			sbInfo.dwCursorPosition.X = sbInfo.dwSize.X - 1;
-			--(sbInfo.dwCursorPosition.Y);
-			FillConsoleOutputCharacter(_el_h_out, c, 1,
-				sbInfo.dwCursorPosition, &n_chars);
-		}
-		/*
-		put the cursor back into the position
-		it occupied before printing
-		*/
-		memcpy(&(sbInfo.dwCursorPosition), &temp_coord,
-			sizeof(COORD));
-		if (!SetConsoleCursorPosition(_el_h_out,
-			sbInfo.dwCursorPosition)) {
-			return -1;
-		}
-	}
-	else {
 		/*
 		if the string will not fit on the first line
 		pad with spaces then print it
 		*/
 		wcsncpy(_el_temp_print, string, c_first_line);
-		c = (extra ? _T(' ') : _el_temp_print[c_first_line - 1]);
 		_el_temp_print[c_first_line] = _T('\0');
 		padded_len = _el_pad(&sbInfo, _el_temp_print);
-		if (sbInfo.dwCursorPosition.Y == sbInfo.dwSize.Y - 1) {
+		if ((sbInfo.dwCursorPosition.Y - tail_lines) >= sbInfo.dwSize.Y) {
 			printf("\n");
 			--(sbInfo.dwCursorPosition.Y);
 			if (!SetConsoleCursorPosition(_el_h_out,
@@ -576,23 +526,12 @@ int _el_print_string(wchar_t *string)
 			padded_len, &n_chars, NULL)) {
 			return -1;
 		}
-		if (!GetConsoleScreenBufferInfo(_el_h_out, &sbInfo)) {
-			return -1;
-		}
-		temp_coord.X = sbInfo.dwSize.X - 1;
-		temp_coord.Y = sbInfo.dwCursorPosition.Y - 1;
-		FillConsoleOutputCharacter(_el_h_out, c, 1, temp_coord, &n_chars);
-		/*
-		if there are more characters in addition
-		to those on the last line, then print dy
-		full lines
-		*/
+		printf("\n");
 		for (i = 0; i < dy; ++i) {
 			wcsncpy(_el_temp_print, &string[c_first_line + i * width], width);
-			c = (extra ? _T(' ') : _el_temp_print[width - 1]);
 			_el_temp_print[width] = _T('\0');
 			padded_len = _el_pad(&sbInfo, _el_temp_print);
-			if (sbInfo.dwCursorPosition.Y == sbInfo.dwSize.Y - 1) {
+			if ((sbInfo.dwCursorPosition.Y - tail_lines) >= sbInfo.dwSize.Y) {
 				printf("\n");
 				--(sbInfo.dwCursorPosition.Y);
 				if (!SetConsoleCursorPosition(_el_h_out,
@@ -604,12 +543,7 @@ int _el_print_string(wchar_t *string)
 				padded_len, &n_chars, NULL)) {
 				return -1;
 			}
-			if (!GetConsoleScreenBufferInfo(_el_h_out, &sbInfo)) {
-				return -1;
-			}
-			temp_coord.X = sbInfo.dwSize.X - 1;
-			temp_coord.Y = sbInfo.dwCursorPosition.Y - 1;
-			FillConsoleOutputCharacter(_el_h_out, c, 1, temp_coord, &n_chars);
+			printf("\n");
 		}	
 		/*
 		if there are residual characters on the last line
@@ -640,7 +574,7 @@ int _el_print_string(wchar_t *string)
 			wcsncpy(_el_temp_print, &string[c_first_line + dy * width], c_last_line);
 			_el_temp_print[c_last_line] = _T('\0');
 			padded_len = _el_pad(&sbInfo, _el_temp_print);
-			if (sbInfo.dwCursorPosition.Y == sbInfo.dwSize.Y - 1) {
+			if ((sbInfo.dwCursorPosition.Y - tail_lines) >= sbInfo.dwSize.Y) {
 				printf("\n");
 				--(sbInfo.dwCursorPosition.Y);
 				--(temp_coord.Y);
@@ -670,6 +604,34 @@ int _el_print_string(wchar_t *string)
 		*/
 		sbInfo.dwCursorPosition.Y -= (dy + 1);
 		sbInfo.dwCursorPosition.X = x_initial;
+		if (!SetConsoleCursorPosition(_el_h_out,
+			sbInfo.dwCursorPosition)) {
+			return -1;
+		}
+	}
+	else {
+		/*
+		if the whole string will fit on the first line
+		without need to wrap, record current
+		cursor coordinates
+		*/
+		memcpy(&temp_coord, &(sbInfo.dwCursorPosition),
+			sizeof(COORD));
+		/*
+		write out the string
+		*/
+		wcscpy(_el_temp_print, string);
+		padded_len = _el_pad(&sbInfo, _el_temp_print);
+		if (!WriteConsole(_el_h_out, _el_temp_print,
+			padded_len, &n_chars, NULL)) {
+			return -1;
+		}
+		/*
+		put the cursor back into the position
+		it occupied before printing
+		*/
+		memcpy(&(sbInfo.dwCursorPosition), &temp_coord,
+			sizeof(COORD));
 		if (!SetConsoleCursorPosition(_el_h_out,
 			sbInfo.dwCursorPosition)) {
 			return -1;
@@ -871,7 +833,9 @@ int _el_set_cursor(int offset)
 	/*
 	set the new physical cursor position
 	*/
-	if (sbInfo.dwCursorPosition.Y == sbInfo.dwSize.Y - 1) {
+	if ((sbInfo.dwCursorPosition.Y + dy -
+		(wcslen(&_el_line_buffer[rl_point]) / width))
+		>= sbInfo.dwSize.Y) {
 		printf("\n");
 		--dy;
 		old_x = sbInfo.dwCursorPosition.X;
@@ -879,9 +843,6 @@ int _el_set_cursor(int offset)
 			return -1;
 		}
 		sbInfo.dwCursorPosition.X = old_x;
-	}
-	if (sbInfo.dwCursorPosition.Y == sbInfo.dwSize.Y - 1) {
-		--dy;
 	}
 	sbInfo.dwCursorPosition.X += dx;
 	sbInfo.dwCursorPosition.Y += dy;
@@ -948,7 +909,6 @@ char *readline(const char *prompt)
 	int line_len = 0;
 	int old_width = 0;
 	int width = 0;
-	int extra;
 	UINT32 ctrl = 0;
 	UINT32 special = 0;
 	COORD coord;
@@ -1057,7 +1017,6 @@ char *readline(const char *prompt)
 		compute the current visible console width
 		*/
 		width = sbInfo.srWindow.Right - sbInfo.srWindow.Left + 1;
-		extra = ((sbInfo.dwSize.X > width) ? 1 : 0);
 		/*
 		if the user has changed the window size
 		update the view
@@ -1448,14 +1407,14 @@ char *readline(const char *prompt)
 						prevents the euro sign from being printed
 						*/
 						default:
-						//if (iswprint(buf[0])) {
+						/*if (iswprint(buf[0])) {*/
 							_el_compl_index = 0;
 							compl_pos = -1;
 							if (_el_insert_char(buf, 1)) {
 								_el_clean_exit();
 								return NULL;
 							}
-						//}
+						/*}*/
 					}
 				}
 			}

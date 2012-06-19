@@ -37,8 +37,8 @@ INCLUDE_PATH = $(PWD)/../include
 LIBRARY_PATH = $(PWD)/../lib64
 
 STATICLIB = libedit.a
-SHAREDLIB = libedit.dll
-IMPLIB    = libedit.dll.a
+SHAREDLIB = edit.dll
+IMPLIB    = edit.dll.a
 
 PREFIX = /mingw/mingw-w64-1.0-bin_i686-mingw_20110822/bin/x86_64-w64-mingw32-
 CC = $(PREFIX)gcc
