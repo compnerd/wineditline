@@ -81,12 +81,15 @@ libedit_test.exe: libedit_test.o $(STATICLIB)
 	$(LD) $(LDFLAGS) -o $@ libedit_test.o $(STATICLIB)
 	$(STRIP) $@
 
-libedit_test_dll.exe: libedit_test.o $(SHAREDLIB)
-	$(LD) $(LDFLAGS) -o $@ libedit_test.o $(SHAREDLIB)
+libedit_test_dll.exe: libedit_test_dll.o
+	$(LD) $(LDFLAGS) -o $@ libedit_test_dll.o
 	$(STRIP) $@
 
 libedit_test.o: libedit_test.c editline/readline.h
 	$(CC) $(CFLAGS) -c -o $@ libedit_test.c
+
+libedit_test_dll.o: libedit_test_dll.c editline/readline.h
+	$(CC) $(CFLAGS) -c -o $@ libedit_test_dll.c
 
 # BINARY_PATH, INCLUDE_PATH and LIBRARY_PATH must be set.
 
