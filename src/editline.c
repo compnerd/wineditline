@@ -776,7 +776,6 @@ int _el_set_cursor(int offset)
 {	
 	CONSOLE_SCREEN_BUFFER_INFO sbInfo;
 	int width;
-	int extra;
 	int old_x;
 	int dx;
 	int dy = 0;
@@ -793,7 +792,6 @@ int _el_set_cursor(int offset)
 	compute the current visible console width
 	*/
 	width = sbInfo.srWindow.Right - sbInfo.srWindow.Left + 1;
-	extra = ((sbInfo.dwSize.X > width) ? 1 : 0);
 	dx = offset;
 	/*
 	if the cursor has to be moved rightwards
