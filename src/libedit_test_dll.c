@@ -4,8 +4,8 @@ libedit_test_dll.c
 
 is part of:
 
-MinGWEditLine
-Copyright 2010-2012 Paolo Tosco <paolo.tosco@unito.it>
+WinEditLine (formerly MinGWEditLine)
+Copyright 2010-2014 Paolo Tosco <paolo.tosco@unito.it>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -17,9 +17,9 @@ are met:
     * Redistributions in binary form must reproduce the above copyright
     notice, this list of conditions and the following disclaimer in the
     documentation and/or other materials provided with the distribution.
-    * Neither the name of MinGWEditLine nor the name of its contributors
-    may be used to endorse or promote products derived from this software
-    without specific prior written permission.
+    * Neither the name of WinEditLine (formerly MinGWEditLine) nor the
+    name of its contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -37,7 +37,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 /*
-This example shows how to optionally support MinGWEditLine
+This example shows how to optionally support WinEditLine
 if it is available as a runtime DLL and to work without
 editline support if it is unavailable
 */
@@ -63,9 +63,9 @@ editline support if it is unavailable
 
 /* simple mapping for dlopen to WIN32 */
 #ifdef WIN32
-#define	dlopen(X,Y)		LoadLibrary((X))
-#define	dlsym(X,Y)		GetProcAddress((HINSTANCE)(X),(Y))
-#define	dlclose(X)		FreeLibrary((X))
+#define  dlopen(X,Y)    LoadLibrary((X))
+#define  dlsym(X,Y)    GetProcAddress((HINSTANCE)(X),(Y))
+#define  dlclose(X)    FreeLibrary((X))
 #endif /* WIN32 */
 
 #ifndef RTLD_NOW
@@ -77,8 +77,8 @@ editline support if it is unavailable
 
 #define DL_OPEN_FLAGS RTLD_NOW|RTLD_LOCAL
 
-#define DO_EDIT_ERROR_NONE 		0
-#define DO_EDIT_ERROR_FAILED		1
+#define DO_EDIT_ERROR_NONE     0
+#define DO_EDIT_ERROR_FAILED    1
 
 /* libedit implements the same interface that readline does but as it 
  * is under a BSD license it is more commonly used and that is what
@@ -91,9 +91,13 @@ editline support if it is unavailable
  *       editable command line we want to offer here
  */
 #ifdef WIN32
-#define DO_EDIT_DEFAULT_LIB	"edit.dll"
+#ifdef _MSC_VER
+#define DO_EDIT_DEFAULT_LIB  "edit.dll"
 #else
-#define DO_EDIT_DEFAULT_LIB	"libedit.so"
+#define DO_EDIT_DEFAULT_LIB  "libedit.dll"
+#endif
+#else
+#define DO_EDIT_DEFAULT_LIB  "libedit.so"
 #endif
 
 typedef struct func_t_st {
@@ -107,7 +111,7 @@ static FUNC_T do_edit_extern_funcs[] = {
 /* [1] */  { "add_history", NULL },
 };
 #define N_do_edit_extern_funcs \
-	(sizeof(do_edit_extern_funcs)/sizeof(do_edit_extern_funcs[0]))
+  (sizeof(do_edit_extern_funcs)/sizeof(do_edit_extern_funcs[0]))
 
 static int   do_edit_extern_funcs_init=0;
 static int   do_edit_extern_funcs_loaded=0;
@@ -128,16 +132,16 @@ int DO_EDIT_load(char *libname)
     if (do_edit_dl_handle!=NULL) {
       for(i=0;i<N_do_edit_extern_funcs;i++) {
 #ifdef WIN32
-	u.fp=(void (*)(void))dlsym(do_edit_dl_handle,
-				do_edit_extern_funcs[i].name);
+  u.fp=(void (*)(void))dlsym(do_edit_dl_handle,
+        do_edit_extern_funcs[i].name);
 #else /* !WIN32 */
-	u.p=dlsym(do_edit_dl_handle,do_edit_extern_funcs[i].name);
+  u.p=dlsym(do_edit_dl_handle,do_edit_extern_funcs[i].name);
 #endif /* WIN32 */
-	if (u.p==NULL) {
-	  kret=DO_EDIT_ERROR_FAILED;
-	} else {
-	  do_edit_extern_funcs[i].func=u.fp;
-	}
+  if (u.p==NULL) {
+    kret=DO_EDIT_ERROR_FAILED;
+  } else {
+    do_edit_extern_funcs[i].func=u.fp;
+  }
       }
     } else {
       kret=DO_EDIT_ERROR_FAILED;
@@ -149,7 +153,7 @@ int DO_EDIT_load(char *libname)
     } else {
       if (do_edit_dl_handle!=NULL) {
         dlclose(do_edit_dl_handle);
-	do_edit_dl_handle=NULL;
+  do_edit_dl_handle=NULL;
       }
     }
   }
@@ -202,8 +206,8 @@ static int l_do_edit_add_history(char *line)
 char *DO_EDIT_read(char *prompt)
 {
   char *ret=NULL;
-  char  buf[BUFSIZ];
-  int   len;
+  char buf[BUFSIZ];
+  size_t len;
 
   /* only load the default edit library first time calling this function
    * and only if it not already loaded
@@ -232,10 +236,10 @@ char *DO_EDIT_read(char *prompt)
       while(len>0) {
         if ((buf[len-1]=='\r')||(buf[len-1]=='\n')) {
           buf[len-1]='\0';
-	  len--;
-	} else {
-	  break;
-	}
+          len--;
+        } else {
+          break;
+        }
       }
       ret=strdup(buf);
     }
@@ -246,14 +250,14 @@ char *DO_EDIT_read(char *prompt)
 
 int main(int argc, char *argv[])
 {
-	char *line;
+  char *line;
 
-	printf("\nType exit to quit the test\n\n");
-	while ((line = DO_EDIT_read("prompt>"))
-		&& (strncmp(line, "exit", 4))) {
-		printf("string=%s\n", line);
-		free(line);
-	}
-	
-	return 0;
+  printf("\nType exit to quit the test\n\n");
+  while ((line = DO_EDIT_read("prompt>"))
+    && (strncmp(line, "exit", 4))) {
+    printf("string=%s\n", line);
+    //free(line);
+  }
+  
+  return 0;
 }

@@ -4,8 +4,8 @@ readline.h
 
 is part of:
 
-MinGWEditLine
-Copyright 2010-2012 Paolo Tosco <paolo.tosco@unito.it>
+WinEditLine (formerly MinGWEditLine)
+Copyright 2010-2014 Paolo Tosco <paolo.tosco@unito.it>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -17,9 +17,9 @@ are met:
     * Redistributions in binary form must reproduce the above copyright
     notice, this list of conditions and the following disclaimer in the
     documentation and/or other materials provided with the distribution.
-    * Neither the name of MinGWEditLine nor the name of its contributors
-    may be used to endorse or promote products derived from this software
-    without specific prior written permission.
+    * Neither the name of WinEditLine (formerly MinGWEditLine) nor the
+    name of its contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -41,57 +41,57 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <windows.h>
 
-#define LIBEDIT_VERSION "2.07"
-
 /*
 these defines may be changed
 */
-#define _EL_BUF_LEN			4096	/* maximum line buffer size */
-#define DEFAULT_HISTORY_SIZE		200	/* default number of history entries */
+#define _EL_BUF_LEN      4096  /* maximum line buffer size */
+#define DEFAULT_HISTORY_SIZE    200  /* default number of history entries */
 
 /*
 these defines should not be mangled
 */
-#define _EL_CONSOLE_BUF_LEN		8
-#define _EL_MIN_HIST_SIZE		1
-#define _EL_ENV_BUF_LEN			64
-#define _EL_MAX_FILE_BREAK_CHARACTERS	64
-#define _EL_BASIC_FILE_BREAK_CHARACTERS	_T(" \t\n$><=;|&")
+#define _EL_CONSOLE_BUF_LEN    8
+#define _EL_MIN_HIST_SIZE    1
+#define _EL_ENV_BUF_LEN      64
+#define _EL_MAX_FILE_BREAK_CHARACTERS  64
+#define _EL_BASIC_FILE_BREAK_CHARACTERS  _T(" \"\t\n=><|")
+#define _EL_BASIC_FILE_QUOTE_CHARACTERS  _T(" $;=&")
 
 /*
 these are included because for some reason
 they are missing from MinGW gcc 4.5.0
 */
 #ifndef ENABLE_EXTENDED_FLAGS
-#define ENABLE_EXTENDED_FLAGS		0x0080
+#define ENABLE_EXTENDED_FLAGS    0x0080
 #endif
 #ifndef ENABLE_INSERT_MODE
-#define ENABLE_INSERT_MODE              0x0020
+#define ENABLE_INSERT_MODE    0x0020
 #endif
 #ifndef ENABLE_QUICK_EDIT_MODE
-#define ENABLE_QUICK_EDIT_MODE		0x0040
+#define ENABLE_QUICK_EDIT_MODE    0x0040
 #endif
 
 
 typedef char **rl_completion_func_t(const char *, int, int);
 typedef char *rl_compentry_func_t(const char *, int);
+typedef void rl_compentryfree_func_t(void *);
 /*
-this is ignored by MinGWEditLine
+this is ignored by WinEditLine
 */
 typedef void *histdata_t;
 
 typedef struct _hist_entry {
-	char *line;
-	char *timestamp;
-	histdata_t data;
+  char *line;
+  char *timestamp;
+  histdata_t data;
 } HIST_ENTRY;
 
 typedef struct _hist_state {
-	HIST_ENTRY **entries;
-	int offset;
-	int length;
-	int size;
-	int flags;
+  HIST_ENTRY **entries;
+  int offset;
+  int length;
+  int size;
+  int flags;
 } HISTORY_STATE;
 
 
@@ -134,6 +134,7 @@ void source_editrc();
 char *readline(const char *prompt);
 char **rl_completion_matches(const char *text, char *entry_func(const char *, int));
 char *rl_filename_completion_function(const char *text, int state);
+void rl_free(void *mem);
 int using_history();
 void free_history();
 void free_history_entry(HIST_ENTRY *entry);
@@ -184,6 +185,7 @@ extern int _el_prompt_len;
 extern const char *rl_readline_name;
 extern rl_completion_func_t *rl_attempted_completion_function;
 extern rl_compentry_func_t *rl_completion_entry_function;
+extern rl_compentryfree_func_t *rl_user_completion_entry_free_function;
 extern BOOL _el_prev_in_cm_saved;
 extern BOOL _el_prev_out_cm_saved;
 extern DWORD _el_prev_in_cm;

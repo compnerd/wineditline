@@ -4,8 +4,8 @@ globals.h
 
 is part of:
 
-MinGWEditLine
-Copyright 2010-2012 Paolo Tosco <paolo.tosco@unito.it>
+WinEditLine (formerly MinGWEditLine)
+Copyright 2010-2014 Paolo Tosco <paolo.tosco@unito.it>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -17,9 +17,9 @@ are met:
     * Redistributions in binary form must reproduce the above copyright
     notice, this list of conditions and the following disclaimer in the
     documentation and/or other materials provided with the distribution.
-    * Neither the name of MinGWEditLine nor the name of its contributors
-    may be used to endorse or promote products derived from this software
-    without specific prior written permission.
+    * Neither the name of WinEditLine (formerly MinGWEditLine) nor the
+    name of its contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -42,6 +42,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 const char *rl_readline_name = NULL;
 wchar_t *_el_print = NULL;
 wchar_t *_el_temp_print = NULL;
+size_t _el_temp_print_size = 0;
 wchar_t *_el_next_compl = NULL;
 wchar_t *_el_file_name = NULL;
 wchar_t *_el_dir_name = NULL;
@@ -49,6 +50,7 @@ wchar_t *_el_old_arg = NULL;
 wchar_t *_el_wide = NULL;
 wchar_t *_el_text = NULL;
 wchar_t *_el_line_buffer = NULL;
+size_t _el_line_buffer_size = 0;
 wchar_t *_el_basic_word_break_characters = NULL;
 wchar_t *_el_completer_word_break_characters = NULL;
 wchar_t _el_basic_file_break_characters[_EL_MAX_FILE_BREAK_CHARACTERS];
@@ -68,6 +70,7 @@ int _el_n_compl = 0;
 int _el_prompt_len = 0;
 rl_completion_func_t *rl_attempted_completion_function = NULL;
 rl_compentry_func_t *rl_completion_entry_function = NULL;
+rl_compentryfree_func_t *rl_user_completion_entry_free_function = NULL;
 BOOL _el_prev_in_cm_saved = FALSE;
 BOOL _el_prev_out_cm_saved = FALSE;
 BOOL _el_prev_sbInfo_saved = FALSE;

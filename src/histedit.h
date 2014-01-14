@@ -4,8 +4,8 @@ histedit.h
 
 is part of:
 
-MinGWEditLine
-Copyright 2010-2012 Paolo Tosco <paolo.tosco@unito.it>
+WinEditLine (formerly MinGWEditLine)
+Copyright 2010-2014 Paolo Tosco <paolo.tosco@unito.it>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -17,9 +17,9 @@ are met:
     * Redistributions in binary form must reproduce the above copyright
     notice, this list of conditions and the following disclaimer in the
     documentation and/or other materials provided with the distribution.
-    * Neither the name of MinGWEditLine nor the name of its contributors
-    may be used to endorse or promote products derived from this software
-    without specific prior written permission.
+    * Neither the name of WinEditLine (formerly MinGWEditLine) nor the
+    name of its contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -37,5 +37,5 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 #ifndef _HISTEDIT_H_
-#define	_HISTEDIT_H_
+#define  _HISTEDIT_H_
 #endif /* _HISTEDIT_H_ */
