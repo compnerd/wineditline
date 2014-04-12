@@ -1015,7 +1015,8 @@ char *readline(const char *prompt)
   SetConsoleCtrlHandler((PHANDLER_ROUTINE)
     _el_signal_handler, TRUE);
   rl_point = 0;
-  while ((buf[0] != VK_RETURN) && (!_el_ctrl_c_pressed)) {
+  while ((buf[0] != VK_RETURN)
+    && (!_el_ctrl_c_pressed) && _el_line_buffer) {
     /*
     get screen buffer info from the current console
     */
@@ -1462,15 +1463,17 @@ char *readline(const char *prompt)
   /*
   if CTRL+C has been pressed, return an empty string
   */
-  if (_el_ctrl_c_pressed) {
-    n = (int)wcslen(_el_line_buffer) - rl_point;
-    if (n) {
-      _el_set_cursor(n);
+  if (_el_line_buffer) {
+    if (_el_ctrl_c_pressed) {
+      n = (int)wcslen(_el_line_buffer) - rl_point;
+      if (n) {
+        _el_set_cursor(n);
+      }
+      _el_line_buffer[0] = _T('\0');
     }
-    _el_line_buffer[0] = _T('\0');
+    _el_w2mb(_el_line_buffer, &rl_line_buffer);
+    ret_string = _strdup(rl_line_buffer);
   }
-  _el_w2mb(_el_line_buffer, &rl_line_buffer);
-  ret_string = _strdup(rl_line_buffer);
   _el_clean_exit();
   
   return ret_string;

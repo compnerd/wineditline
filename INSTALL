@@ -40,7 +40,7 @@ installation on your system.
 Static libraries are installed in the lib32, lib64 folders, while
 DLLs and test programs are installed in the bin32, bin64 folders;
 all these folders are located in the WinEditLine root directory.
-libedit_test.exe and libedit_test_dll.exe are test programs which can
+edit_test.exe and edit_test_dll.exe are test programs which can
 be used to verify that both static and shared libedit versions have
 been built and work correctly. libedit_test_dll.c is a nice, portable
 example contributed by Tim Hudson which shows how to build programs

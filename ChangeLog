@@ -1,6 +1,19 @@
 WinEditLine's (formerly MinGWEditLine) ChangeLog
 ------------------------------------------------
 
+*** April 12, 2014: release of WinEditLine 2.101 ***
+
+  Changes with respect to the previous version include:
+
+  - CMakeLists.txt was modified so that now both MinGW and MSVC
+    compilers generate a DLL file with the same name (edit.dll);
+    thanks to Peter Frentrup for suggesting this fix
+  - Fixed a bug in readline(): when signal(SIGINT, SIG_IGN) was used
+    to ignore CTRL+C, WinEditLine crashed instead of returning NULL
+    if CTRL+C was pressed at the beginning of the line (thanks to
+    Peter Frentrup for reporting this)
+
+
 *** January 13, 2014: release of WinEditLine 2.1 ***
 
   Changes with respect to the previous version include:
