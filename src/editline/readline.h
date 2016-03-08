@@ -123,6 +123,9 @@ int _el_display_prev_hist();
 int _el_display_next_hist();
 int _el_display_first_hist();
 int _el_display_last_hist();
+HIST_ENTRY *_el_previous_history();
+HIST_ENTRY *_el_next_history();
+int _el_history_set_pos(int i);
 BOOL _el_signal_handler(DWORD fdwCtrlType);
 BOOL _el_replace_char(wchar_t *string, wchar_t src, wchar_t dest);
 
