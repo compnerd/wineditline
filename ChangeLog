@@ -1,6 +1,18 @@
 WinEditLine's (formerly MinGWEditLine) ChangeLog
 ------------------------------------------------
 
+*** November 13, 2016: release of WinEditLine 2.2 ***
+
+  Changes with respect to the previous version include:
+
+  - the length of lines is not limited to 4096 characters anymore
+  - text can now be piped into readline() or read from a file
+  - implemented append_history() and history_truncate_file()
+  - cleaned up editline/readline.h to report only exposed functions
+  - the history file is now written with Windows CR+LF endings
+  - both Unix and Windows line endings are accepted on input
+  
+
 *** March 8, 2016: release of WinEditLine 2.102 ***
 
   Changes with respect to the previous version include:
