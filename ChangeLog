@@ -5,18 +5,18 @@ WinEditLine's (formerly MinGWEditLine) ChangeLog
 
   Changes with respect to the previous version include:
 
-  - the length of lines is not limited to 4096 characters anymore
+  - The length of lines is not limited to 4096 characters anymore
   - text can now be piped into readline() or read from a file
-  - implemented append_history() and history_truncate_file()
-  - cleaned up editline/readline.h to report only exposed functions
-  - the history file is now written with Windows CR+LF endings
-  - both Unix and Windows line endings are accepted on input
+  - Implemented append_history() and history_truncate_file()
+  - Cleaned up editline/readline.h to report only exposed functions
+  - The history file is now written with Windows CR+LF endings
+  - Both Unix and Windows line endings are accepted on input
   - history_length() now reports the correct history length (it used
     to report the actual length + 1)
   - current_history() now correctly reports the current history entry
   - previous_history() and next_history() do not allow going outside
     history boundaries
-  - where_history() is now 1-based as in libedit/readline
+  - Where_history() is now 1-based as in libedit/readline
   - set_current_pos() is now 1-based as in libedit/readline
   - fixed the DLL name in libedit_test_dll.c
 
