@@ -1,6 +1,12 @@
 WinEditLine's (formerly MinGWEditLine) ChangeLog
 ------------------------------------------------
 
+*** November 17, 2016: release of WinEditLine 2.201 ***
+
+  Changes with respect to the previous version include:
+  - all CR, LF characters are now stripped when redirecting input
+    from a file or pipe
+
 *** November 13, 2016: release of WinEditLine 2.2 ***
 
   Changes with respect to the previous version include:

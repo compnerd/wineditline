@@ -1017,13 +1017,11 @@ char *readline(const char *prompt)
       }
     }
     if (rl_line_buffer) {
+      while (len && ((rl_line_buffer[len - 1] == '\n')
+        || (rl_line_buffer[len - 1] == '\r'))) {
+        --len;
+      }
       rl_line_buffer[len] = '\0';
-      if ((len > 0) && rl_line_buffer[len - 1] == '\n') {
-        rl_line_buffer[len - 1] = '\0';
-      }
-      if ((len > 1) && rl_line_buffer[len - 2] == '\r') {
-        rl_line_buffer[len - 2] = '\0';
-      }
       ret_string = _strdup(rl_line_buffer);
     }
     _el_clean_exit();
