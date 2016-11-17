@@ -5,7 +5,7 @@ WinEditLine's (formerly MinGWEditLine) ChangeLog
 
   Changes with respect to the previous version include:
   - all CR, LF characters are now stripped when redirecting input
-    from a file or pipe
+    from a file or pipe (thanks to Paolo Vergano for reporting this)
 
 *** November 13, 2016: release of WinEditLine 2.2 ***
 
