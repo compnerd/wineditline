@@ -908,6 +908,7 @@ char *readline(const char *prompt)
   char **array = NULL;
   char *ret_string = NULL;
   char readfile_buf;
+  char have_cursor_x_start = 0;
   int start = 0;
   int end = 0;
   int compl_pos = -1;
@@ -920,6 +921,7 @@ char *readline(const char *prompt)
   UINT32 ctrl = 0;
   UINT32 special = 0;
   COORD coord;
+  SHORT cursor_x_start = 0;
   DWORD count = 0;
   BOOL read_ok;
   DWORD file_type;
@@ -974,11 +976,11 @@ char *readline(const char *prompt)
   }
   rl_attempted_completion_over = 0;
   rl_prompt = (prompt ? _strdup(prompt) : _strdup(""));
-  if (!(rl_prompt)) {
+  if (!rl_prompt) {
     _el_clean_exit();
     return NULL;
   }
-  if (!_el_mb2w((char *)prompt, &_el_prompt)) {
+  if (!_el_mb2w(rl_prompt, &_el_prompt)) {
     _el_clean_exit();
     return NULL;
   }
@@ -1047,6 +1049,10 @@ char *readline(const char *prompt)
       _el_clean_exit();
       return NULL;
     }
+    if (!have_cursor_x_start) {
+      have_cursor_x_start = 1;
+      cursor_x_start = sbInfo.dwCursorPosition.X;
+    }
     _el_temp_print_size = sbInfo.dwSize.X + 1;
     if (!(_el_temp_print = realloc(_el_temp_print,
       _el_temp_print_size * sizeof(wchar_t)))) {
@@ -1064,7 +1070,7 @@ char *readline(const char *prompt)
     */
     if (old_width != width) {
       line_len = (int)wcslen(_el_line_buffer);
-      sbInfo.dwCursorPosition.X = 0;
+      sbInfo.dwCursorPosition.X = cursor_x_start;
       if (old_width) {
         n = (_el_prompt_len + line_len - 1) / old_width;
         sbInfo.dwCursorPosition.Y -= n;
