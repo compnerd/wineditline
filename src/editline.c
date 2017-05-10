@@ -973,7 +973,7 @@ char *readline(const char *prompt)
     }
   }
   rl_attempted_completion_over = 0;
-  rl_prompt = _strdup(prompt);
+  rl_prompt = (prompt ? _strdup(prompt) : _strdup(""));
   if (!(rl_prompt)) {
     _el_clean_exit();
     return NULL;
