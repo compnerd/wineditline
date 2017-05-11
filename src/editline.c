@@ -1072,7 +1072,7 @@ char *readline(const char *prompt)
       line_len = (int)wcslen(_el_line_buffer);
       sbInfo.dwCursorPosition.X = cursor_x_start;
       if (old_width) {
-        n = (_el_prompt_len + line_len - 1) / old_width;
+        n = (cursor_x_start + line_len - 1) / old_width;
         sbInfo.dwCursorPosition.Y -= n;
         coord.Y = sbInfo.dwCursorPosition.Y;
       }
@@ -1099,7 +1099,7 @@ char *readline(const char *prompt)
       }
       if (old_width && (old_width < width)) {
         coord.X = 0;
-        coord.Y += (_el_prompt_len + line_len - 1) / width + 1;
+        coord.Y += (cursor_x_start + line_len - 1) / width + 1;
         FillConsoleOutputCharacter(_el_h_out, _T(' '),
           sbInfo.dwSize.X * (n + 2), coord, &count);
       }
