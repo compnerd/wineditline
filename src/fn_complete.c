@@ -47,8 +47,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ctype.h>
 #include <wctype.h>
 #include <tchar.h>
+#if defined __GNUC__ && defined __MINGW32__
+#ifdef __CRT__NO_INLINE
+#undef __CRT__NO_INLINE
+#define NEED_REDEFINE__CRT__NO_INLINE
+#endif
+#endif
 #include <Strsafe.h>
-
+#ifdef NEED_REDEFINE__CRT__NO_INLINE
+#define __CRT__NO_INLINE
+#endif
 
 //#define FN_COMPLETE_DEBUG 1
 
