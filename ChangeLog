@@ -1,6 +1,11 @@
 WinEditLine's (formerly MinGWEditLine) ChangeLog
 ------------------------------------------------
 
+*** December 12, 2017: release of WinEditLine 2.204 ***
+
+  Changes with respect to the previous version include:
+  - install .pdb files when building in Debug mode with MSVC
+
 *** November 20, 2017: release of WinEditLine 2.203 ***
 
   Changes with respect to the previous version include:
