@@ -36,9 +36,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 
-#define _UNICODE
-#define UNICODE
-
 const char *rl_readline_name = NULL;
 wchar_t *_el_print = NULL;
 wchar_t *_el_temp_print = NULL;

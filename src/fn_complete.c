@@ -36,9 +36,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 
-#define _UNICODE
-#define UNICODE
-
 #include <editline/readline.h>
 #include <editline/wineditline.h>
 #include <stdio.h>

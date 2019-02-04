@@ -4,6 +4,7 @@ add_library(edit
             fn_complete.c
             history.c
             libedit.def)
+target_compile_definitions(edit PRIVATE _UNICODE UNICODE)
 set_target_properties(edit PROPERTIES PREFIX "")
 
 include(GenerateExportHeader)
