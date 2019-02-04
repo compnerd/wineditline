@@ -73,26 +73,26 @@ typedef struct _hist_state {
 prototypes of functions which may be
 called by the user
 */
-void source_editrc();
+void source_editrc(void);
 char *readline(const char *prompt);
 char **rl_completion_matches(const char *text, char *entry_func(const char *, int));
 char *rl_filename_completion_function(const char *text, int state);
 void rl_free(void *mem);
-int using_history();
-void free_history();
+int using_history(void);
+void free_history(void);
 void free_history_entry(HIST_ENTRY *entry);
-void clear_history();
+void clear_history(void);
 char *add_history(char *line);
 HIST_ENTRY *remove_history(int i);
 HIST_ENTRY *replace_history_entry(int i, char *line, histdata_t dummy);
-HIST_ENTRY **history_list();
-int where_history();
-int history_length();
-HIST_ENTRY *current_history();
+HIST_ENTRY **history_list(void);
+int where_history(void);
+int history_length(void);
+HIST_ENTRY *current_history(void);
 HIST_ENTRY *history_get(int offset);
 int history_set_pos(int i);
-HIST_ENTRY *previous_history();
-HIST_ENTRY *next_history();
+HIST_ENTRY *previous_history(void);
+HIST_ENTRY *next_history(void);
 int read_history(const char *filename);
 int write_history(const char *filename);
 int append_history(int nelements, const char *filename);
