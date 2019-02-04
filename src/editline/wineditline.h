@@ -40,6 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define _WINEDITLINE_H_
 
 #include <windows.h>
+#include <editline/readline.h>
 
 /*
 these defines may be changed

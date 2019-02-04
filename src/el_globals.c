@@ -36,10 +36,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 
+#include <stdlib.h>
+#include "editline/wineditline.h"
+
 const char *rl_readline_name = NULL;
 wchar_t *_el_print = NULL;
 wchar_t *_el_temp_print = NULL;
-size_t _el_temp_print_size = 0;
 wchar_t *_el_next_compl = NULL;
 wchar_t *_el_file_name = NULL;
 wchar_t *_el_dir_name = NULL;
@@ -47,7 +49,6 @@ wchar_t *_el_old_arg = NULL;
 wchar_t *_el_wide = NULL;
 wchar_t *_el_text = NULL;
 wchar_t *_el_line_buffer = NULL;
-size_t _el_line_buffer_size = 0;
 wchar_t *_el_basic_word_break_characters = NULL;
 wchar_t *_el_completer_word_break_characters = NULL;
 wchar_t _el_basic_file_break_characters[_EL_MAX_FILE_BREAK_CHARACTERS];

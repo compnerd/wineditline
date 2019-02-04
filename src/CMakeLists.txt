@@ -1,6 +1,7 @@
 
 add_library(edit
             editline.c
+            el_globals.c
             fn_complete.c
             history.c
             libedit.def)

@@ -42,11 +42,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>
 #include <ctype.h>
 #include <wctype.h>
-#include <el_globals.h>
 #include <tchar.h>
 #include <io.h>
 #include <fcntl.h>
 
+static size_t _el_temp_print_size = 0;
+size_t _el_line_buffer_size = 0;
 
 int _el_display_prev_hist()
 {
