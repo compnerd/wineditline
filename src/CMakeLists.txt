@@ -15,12 +15,6 @@ generate_export_header(edit
                        EXPORT_FILE_NAME edit_Export.h
                        STATIC_DEFINE edit_BUILT_AS_STATIC)
 
-add_executable(edit_test libedit_test.c)
-target_link_libraries(edit_test edit)
-
-add_executable(edit_test_dll libedit_test_dll.c)
-target_link_libraries(edit_test_dll edit)
-
 install(TARGETS edit
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib

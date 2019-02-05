@@ -1,5 +1,6 @@
 
 cmake_minimum_required(VERSION 3.4.3)
+include(CMakeDependentOption)
 
 project(WinEditLine LANGUAGES C VERSION 2.2)
 
@@ -19,3 +20,10 @@ if (MSVC AND MSVC_USE_STATIC_RUNTIME)
 endif()
 
 add_subdirectory(src)
+
+option(BUILD_EXAMPLES "build examples" OFF)
+cmake_dependent_option(INSTALL_EXAMPLES "install examples" OFF
+ "BUILD_EXAMPLES" OFF)
+if(BUILD_EXAMPLES)
+  add_subdirectory(examples)
+endif()
