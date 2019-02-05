@@ -3,8 +3,14 @@ add_library(edit
             editline.c
             el_globals.c
             fn_complete.c
-            history.c
-            libedit.def)
+            history.c)
+if(BUILD_SHARED_LIBS)
+  target_compile_definitions(edit PRIVATE _USRDLL)
+  # NOTE: CMake will define edit_EXPORTS, however, because we provide interfaces
+  # for both libedit and readline, provide a separate exports macro to
+  # differentiate between the interfaces.
+  target_compile_definitions(edit PRIVATE readline_EXPORTS)
+endif()
 target_compile_definitions(edit PRIVATE _UNICODE UNICODE)
 set_target_properties(edit PROPERTIES PREFIX "")
 

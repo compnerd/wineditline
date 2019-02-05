@@ -41,6 +41,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <windows.h>
 
+#if defined(_USRDLL)
+  #if defined(readline_EXPORTS)
+    #define READLINE_ABI __declspec(dllexport)
+  #else
+    #define READLINE_ABI __declpsec(dllimport)
+  #endif
+#else
+  #define READLINE_ABI
+#endif
+
 /*
 these defines may be changed
 */
@@ -73,45 +83,113 @@ typedef struct _hist_state {
 prototypes of functions which may be
 called by the user
 */
+READLINE_ABI
 void source_editrc(void);
+
+READLINE_ABI
 char *readline(const char *prompt);
+
+READLINE_ABI
 char **rl_completion_matches(const char *text, char *entry_func(const char *, int));
+
+READLINE_ABI
 char *rl_filename_completion_function(const char *text, int state);
+
+READLINE_ABI
 void rl_free(void *mem);
+
+READLINE_ABI
 int using_history(void);
+
+READLINE_ABI
 void free_history(void);
+
+READLINE_ABI
 void free_history_entry(HIST_ENTRY *entry);
+
+READLINE_ABI
 void clear_history(void);
+
+READLINE_ABI
 char *add_history(char *line);
+
+READLINE_ABI
 HIST_ENTRY *remove_history(int i);
+
+READLINE_ABI
 HIST_ENTRY *replace_history_entry(int i, char *line, histdata_t dummy);
+
+READLINE_ABI
 HIST_ENTRY **history_list(void);
+
+READLINE_ABI
 int where_history(void);
+
+READLINE_ABI
 int history_length(void);
+
+READLINE_ABI
 HIST_ENTRY *current_history(void);
+
+READLINE_ABI
 HIST_ENTRY *history_get(int offset);
+
+READLINE_ABI
 int history_set_pos(int i);
+
+READLINE_ABI
 HIST_ENTRY *previous_history(void);
+
+READLINE_ABI
 HIST_ENTRY *next_history(void);
+
+READLINE_ABI
 int read_history(const char *filename);
+
+READLINE_ABI
 int write_history(const char *filename);
+
+READLINE_ABI
 int append_history(int nelements, const char *filename);
+
+READLINE_ABI
 int history_truncate_file(const char *filename, int nlines);
 
 /*
 extern variables
 */
-extern char *rl_line_buffer;
-extern char *rl_prompt;
-extern int rl_point;
-extern int rl_attempted_completion_over;
-extern int rl_completion_append_character;
-extern const char rl_basic_word_break_characters[];
-extern const char *rl_completer_word_break_characters;
-extern const char *rl_readline_name;
-extern rl_completion_func_t *rl_attempted_completion_function;
-extern rl_compentry_func_t *rl_completion_entry_function;
-extern rl_compentryfree_func_t *rl_user_completion_entry_free_function;
+extern READLINE_ABI
+char *rl_line_buffer;
+
+extern READLINE_ABI
+char *rl_prompt;
+
+extern READLINE_ABI
+int rl_point;
+
+extern READLINE_ABI
+int rl_attempted_completion_over;
+
+extern READLINE_ABI
+int rl_completion_append_character;
+
+extern READLINE_ABI
+const char rl_basic_word_break_characters[];
+
+extern READLINE_ABI
+const char *rl_completer_word_break_characters;
+
+extern READLINE_ABI
+const char *rl_readline_name;
+
+extern READLINE_ABI
+rl_completion_func_t *rl_attempted_completion_function;
+
+extern READLINE_ABI
+rl_compentry_func_t *rl_completion_entry_function;
+
+extern READLINE_ABI
+rl_compentryfree_func_t *rl_user_completion_entry_free_function;
 
 #ifdef __cplusplus
 }
