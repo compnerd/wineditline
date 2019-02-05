@@ -25,8 +25,10 @@ install(TARGETS edit
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin)
-# install(FILES $<TARGET_PDB_FILE:edit>
-#         DESTINATION bin
-#         OPTIONAL)
+if(BUILD_SHARED_LIBS)
+  install(FILES $<TARGET_PDB_FILE:edit>
+          DESTINATION bin
+          OPTIONAL)
+endif()
 install(FILES editline/readline.h
         DESTINATION include/editline)
